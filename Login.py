@@ -1,10 +1,12 @@
 from upstox_api.api import *
 
 class loginInit(Session):
-    api_key = ""
-    api_secret = ""
-    redirect_api = ""
     u = None
+
+    def __init__(self, api_key, api_secret, redirect_api, ):
+        self.api_key = api_key
+        self.api_secret = api_secret
+        self.redirect_uri = redirect_api
 
 
     def __login__(self):
@@ -16,7 +18,6 @@ class loginInit(Session):
         access_token = s.retrieve_access_token()
         print ('Received access_token: %s' % access_token)
         u = Upstox(self.api_key, access_token)
-        u = self.u
         print (u.get_balance())  # get balance / margin limits
         print (u.get_profile())  # get profile
         print (u.get_holdings())  # get holdings
