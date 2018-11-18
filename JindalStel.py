@@ -54,21 +54,25 @@ def jindalStel():
 def analyzeData(list):
     labels=['scrip','date','time','open','high','low','close','quantity','zero']
     df=pd.DataFrame.from_records(list,columns=labels)
-    #print(df)
+    print(df)
     return list
 
 
 
 def verifySignals(cdf,sdf):
-    #print(cdf)
-    #print(sdf)
+
     # coefOfPatience is the time limit to wait to clear the trade, try it's varying value to see the effect
-    coefOfPatience = 0.15
+    coefOfPatience = 0.06
+
     finalList=[]
     for derived in sdf:
         val=str(derived[0])
         timeEntry=float(val.replace(":","."))+coefOfPatience
-        timeEntry=str(timeEntry).replace(".",":")
+        timeEntry = "{0:.2f}".format(timeEntry)
+        if (len(str(timeEntry)) < 5):
+            timeEntry = str(0) + str(timeEntry).replace(".", ":")
+        else:
+            timeEntry = str(timeEntry).replace(".", ":")
         #print(timeEntry)
         finalProb=[]
         found=0
@@ -80,11 +84,13 @@ def verifySignals(cdf,sdf):
                         finalProb=derived
                         finalProb.append(original[6])
                         finalProb.append("Success")
+                        finalProb.append(timeEntry)
                         #print("success")
                     else:
                         finalProb = derived
                         finalProb.append(original[6])
                         finalProb.append("Failure")
+                        finalProb.append(timeEntry)
                         #print("Failure")
 
                 else:
@@ -92,11 +98,13 @@ def verifySignals(cdf,sdf):
                         finalProb = derived
                         finalProb.append(original[6])
                         finalProb.append("Success")
+                        finalProb.append(timeEntry)
                         #print("success")
                     else:
                         finalProb = derived
                         finalProb.append(original[6])
                         finalProb.append("Failure")
+                        finalProb.append(timeEntry)
                         #print("Failure")
 
                 finalList.append(finalProb)
@@ -116,11 +124,11 @@ def signalPlot(buyList,sellList):
     labels=['time','price','action']
     df=pd.DataFrame.from_records(SignalList,columns=labels)
     df=df.drop_duplicates()
-    print(df)
+    # print(df)
     return list(SignalList for SignalList,_ in itertools.groupby(SignalList))
 
 def resultPlot(finalList):
-    labels=['time','price','action','close_price','outcome']
+    labels = ['time', 'price', 'action', 'close_price', 'outcome', 'exit_time']
     df=pd.DataFrame.from_records(finalList,columns=labels)
     print(df)
     calculatePercentSuccess(finalList)
@@ -142,7 +150,7 @@ def calculatePercentSuccess(finalList):
             loseVal += abs(float(i[1]) - float(i[3]))
         count+=1
 
-
-    print("The probability of this strategy to Win" + "----" +str(float(success*100/count)))
-    print("Wealth generated per lot of 2250 shares will be " + "----*   " + str(2250 * (winVal - loseVal)))
+    print("The probability of this strategy to Win" + "----" + str(count) + "****" + str(success) + "----" + str(
+        float(success * 100 / count)))
+    print("Wealth generated per lot of 2250 shares will be " + "----    " + str(2250 * (winVal - loseVal)))
     pass

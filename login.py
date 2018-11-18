@@ -1,6 +1,5 @@
 from upstox_api.api import *
 
-
 class loginInit(Session):
     api_key = ""
     api_secret = ""
