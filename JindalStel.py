@@ -63,7 +63,7 @@ def verifySignals(cdf,sdf):
     #print(cdf)
     #print(sdf)
     # coefOfPatience is the time limit to wait to clear the trade, try it's varying value to see the effect
-    coefOfPatience=0.04
+    coefOfPatience = 0.15
     finalList=[]
     for derived in sdf:
         val=str(derived[0])
@@ -144,5 +144,5 @@ def calculatePercentSuccess(finalList):
 
 
     print("The probability of this strategy to Win" + "----" +str(float(success*100/count)))
-    print("Wealth generated per lot of 2250 shares will be "+ "----"+str(2250*(winVal-loseVal)))
+    print("Wealth generated per lot of 2250 shares will be " + "----*   " + str(2250 * (winVal - loseVal)))
     pass
