@@ -5,8 +5,9 @@ class loginInit(Session):
     api_key = ""
     api_secret = ""
     redirect_api = ""
+    u = None
 
-    @staticmethod
+
     def __login__(self):
         s = Session(self.api_key)
         s.set_redirect_uri(self.redirect_api)
@@ -16,6 +17,7 @@ class loginInit(Session):
         access_token = s.retrieve_access_token()
         print ('Received access_token: %s' % access_token)
         u = Upstox(self.api_key, access_token)
+        u = self.u
         print (u.get_balance())  # get balance / margin limits
         print (u.get_profile())  # get profile
         print (u.get_holdings())  # get holdings
